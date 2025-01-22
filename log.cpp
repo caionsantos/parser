@@ -4,21 +4,34 @@ using namespace std;
 
 Log::Log(string exp){
     this->tag = true;
-    if(exp == "true"){
-        this->valor = true;
+    this->exp = exp;
+}
+
+Log::Log(bool b){
+    this->tag = true;
+    if(b){
+        this->exp = "true";
     } else{
-        this->valor = false;
+        this->exp = "false";
     }
 }
 
-inline bool Log::e(Expression e){
-    return(e.get_valor() & this->valor);
-}
+// bool Log::boolear(){
+//     if(exp == "true"){
+//         return true;
+//     } else{
+//         return false;
+//     }
+// }
 
-inline bool Log::ou(Expression e){
-    return(e.get_valor() == this->valor);
-}
+// inline bool Log::e(Expression e){
+//     return(e.boolear() & this->boolear());
+// }
 
-inline bool Log::igual(Expression e){
-    return(e.get_valor() == this->valor);
-}
+// inline bool Log::ou(Expression e){
+//     return(e.boolear() == this->boolear());
+// }
+
+// inline bool Log::igual(Expression e){
+//     return(e.boolear() == this->boolear());
+// }

@@ -1,5 +1,9 @@
 #include <bits/stdc++.h>
-#define endl '\n'
+//#include "parser.h"
+#include "num.cpp"
+#include "log.cpp"
+#include "parser.cpp"
+#include "expr.cpp"
 using namespace std;
 
 int main() {
@@ -10,7 +14,9 @@ int main() {
     string s;
     cin >> t;
     for(int i = 0; i < t; i++){
-        cin >> s;
+        Parser p = Parser();
+        p.init_token();
+        cout << p.parse().get_exp() << endl;
     }
 
     return 0;
