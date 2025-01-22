@@ -20,7 +20,7 @@ void Parser::init_token(){
 }
 
 void Parser::next_token(){
-    if((cin.peek() != '\n') & (cin.peek() != '\0')){ 
+    if((cin.peek() != '\n') and (cin.peek() != '\0')){ 
         cin >> token;
     } else{
         cin.ignore();
@@ -46,7 +46,7 @@ Expression Parser::parse_or(){
     if(token == "||"){
         next_token();
         Expression e2 = parse_lit();
-        if(e1.compativel(e2)){
+        if(e1.compativel(e2) and e1.get_tag()){
             return Log(e1.ou(e2));
         } else{
             throw invalid_argument("error");

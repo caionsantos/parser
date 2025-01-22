@@ -11,6 +11,9 @@ class Expression{
         inline string get_exp(){
             return exp;
         }
+        inline bool get_tag(){
+            return tag;
+        }
         inline bool compativel(Expression e){
             return (e.tag == this->tag);
         }
