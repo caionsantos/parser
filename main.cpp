@@ -4,6 +4,7 @@
 #include "log.cpp"
 #include "parser.cpp"
 #include "expr.cpp"
+#include <stdexcept>
 using namespace std;
 
 int main() {
@@ -16,7 +17,11 @@ int main() {
     for(int i = 0; i < t; i++){
         Parser p = Parser();
         p.init_token();
-        cout << p.parse().get_exp() << endl;
+        try{
+            cout << p.parse().get_exp() << endl;
+        } catch (invalid_argument){
+            cout << "error" << endl;
+        }
     }
 
     return 0;
