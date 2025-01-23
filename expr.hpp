@@ -8,15 +8,12 @@ class Expression{
         bool tag;
         string exp;
     public:
-        inline string get_exp(){
-            return exp;
-        }
-        inline bool get_tag(){
-            return tag;
-        }
-        inline bool compativel(Expression e){
-            return (e.tag == this->tag);
-        }
+        Expression(bool b);
+        Expression(long long int l);
+        inline string get_exp();
+        inline bool is_bool();
+        inline bool is_num();
+        inline bool compativel(Expression e);
         inline long long int add(Expression e);
         inline long long int sub(Expression e);
         inline long long int mul(Expression e);

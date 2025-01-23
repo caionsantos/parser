@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
 #include "expr.hpp"
-#include "num.hpp"
-#include "log.hpp"
 #include "parser.hpp"
 #include <stdexcept>
 #include <variant>
@@ -46,8 +44,8 @@ Expression Parser::parse_or(){
     if(token == "||"){
         next_token();
         Expression e2 = parse_and();
-        if(e1.compativel(e2) and e1.get_tag()){
-            return Log(e1.ou(e2));
+        if(e1.compativel(e2) and e1.is_bool()){
+            return Expression(e1.ou(e2));
         } else{
             throw invalid_argument("error");
         }
@@ -61,8 +59,8 @@ Expression Parser::parse_and(){
     if(token == "&&"){
         next_token();
         Expression e2 = parse_eq();
-        if(e1.compativel(e2) and e1.get_tag()){
-            return Log(e1.e(e2));
+        if(e1.compativel(e2) and e1.is_bool()){
+            return Expression(e1.e(e2));
         } else{
             throw invalid_argument("error");
         }
@@ -76,16 +74,16 @@ Expression Parser::parse_eq(){
     if(token == "=="){
         next_token();
         Expression e2 = parse_rel();
-        if(e1.compativel(e2) and e1.get_tag()){
-            return Log(e1.igual(e2));
+        if(e1.compativel(e2)){
+            return Expression(e1.igual(e2));
         } else{
             throw invalid_argument("error");
         }
     } else if(token == "!="){
         next_token();
         Expression e2 = parse_rel();
-        if(e1.compativel(e2) and e1.get_tag()){
-            return Log(!(e1.igual(e2)));
+        if(e1.compativel(e2)){
+            return Expression(!(e1.igual(e2)));
         } else{
             throw invalid_argument("error");
         }
@@ -99,32 +97,32 @@ Expression Parser::parse_rel(){
     if(token == ">"){
         next_token();
         Expression e2 = parse_primary();
-        if(e1.compativel(e2) and !(e1.get_tag())){
-            return Log(e1.maiorque(e2));
+        if(e1.compativel(e2) and e1.is_num()){
+            return Expression(e1.maiorque(e2));
         } else{
             throw invalid_argument("error");
         }
     } else if(token == ">="){
         next_token();
         Expression e2 = parse_primary();
-        if(e1.compativel(e2) and !(e1.get_tag())){
-            return Log((e1.igual(e2)) or (e1.maiorque(e2)));
+        if(e1.compativel(e2) and e1.is_num()){
+            return Expression((e1.igual(e2)) or (e1.maiorque(e2)));
         } else{
             throw invalid_argument("error");
         }
     } else if(token == "<"){
         next_token();
         Expression e2 = parse_primary();
-        if(e1.compativel(e2) and !(e1.get_tag())){
-            return Log(!(e1.maiorque(e2)));
+        if(e1.compativel(e2) and e1.is_num()){
+            return Expression(!(e1.maiorque(e2)));
         } else{
             throw invalid_argument("error");
         }
     } else if(token == "<="){
         next_token();
         Expression e2 = parse_primary();
-        if(e1.compativel(e2) and !(e1.get_tag())){
-            return Log((e1.igual(e2)) or !(e1.maiorque(e2)));
+        if(e1.compativel(e2) and e1.is_num()){
+            return Expression((e1.igual(e2)) or !(e1.maiorque(e2)));
         } else{
             throw invalid_argument("error");
         }
@@ -150,12 +148,12 @@ Expression Parser::parse_lit(){
     variant<long long int, bool> n = read(token);
     next_token();
     if(bool *b = get_if<bool>(&n)){
-        return Log(*b);
+        return Expression(*b);
     } else{
         long long int *l = get_if<long long int>(&n);
         if(check == '-'){
             *l *= -1;
         }
-        return Num(*l);
+        return Expression(*l);
     }
 };

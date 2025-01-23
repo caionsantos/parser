@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
 //#include "parser.h"
-#include "num.cpp"
-#include "log.cpp"
 #include "parser.cpp"
 #include "expr.cpp"
 #include <stdexcept>
