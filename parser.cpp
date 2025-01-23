@@ -42,10 +42,10 @@ variant<long long int, bool> Parser::read(string s){
 }
 
 Expression Parser::parse_or(){
-    Expression e1 = parse_lit();
+    Expression e1 = parse_primary();
     if(token == "||"){
         next_token();
-        Expression e2 = parse_lit();
+        Expression e2 = parse_primary();
         if(e1.compativel(e2) and e1.get_tag()){
             return Log(e1.ou(e2));
         } else{
@@ -55,6 +55,17 @@ Expression Parser::parse_or(){
         return e1;
     }
 };
+
+Expression Parser::parse_primary(){
+    if(token == "("){
+        next_token();
+        Expression e1 = parse_or();
+        return e1;
+    } else{
+        Expression e1 = parse_lit();
+        return e1;
+    }
+}
 
 Expression Parser::parse_lit(){
     variant<long long int, bool> n = read(token);
