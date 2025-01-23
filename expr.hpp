@@ -22,7 +22,6 @@ class Expression{
         inline long long int mul(Expression e);
         inline long long int div(Expression e);
         inline bool igual(Expression e);
-        inline bool igual(Expression e, bool t);
         inline bool maiorque(Expression e);
         inline bool e(Expression e);
         inline bool ou(Expression e);

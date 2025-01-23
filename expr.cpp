@@ -3,7 +3,7 @@
 using namespace std;
 
 inline bool Expression::igual(Expression e){
-    return (stoll(e.get_exp()) == stoll(this->exp));
+    return (e.get_exp() == this->exp);
 }
 
 inline bool Expression::maiorque(Expression e){
@@ -40,8 +40,4 @@ inline bool Expression::e(Expression e){
 
 inline bool Expression::ou(Expression e){
     return(e.boolear() || this->boolear());
-}
-
-inline bool Expression::igual(Expression e, bool t){
-    return(e.boolear() == this->boolear());
 }
