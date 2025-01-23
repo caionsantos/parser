@@ -32,27 +32,27 @@ inline bool Expression::compativel(Expression e){
     return (e.tag == this->tag);
 }
 
-inline bool Expression::igual(Expression e){
+inline bool Expression::operator==(Expression e){
     return (e.exp == this->exp);
 }
 
-inline bool Expression::maiorque(Expression e){
+inline bool Expression::operator>(Expression e){
     return (stoll(this->exp) > stoll(e.get_exp()));
 }
 
-inline long long int Expression::add(Expression e){
+inline long long int Expression::operator+(Expression e){
     return (stoll(this->exp) + stoll(e.get_exp()));
 }
 
-inline long long int Expression::sub(Expression e){
+inline long long int Expression::operator-(Expression e){
     return (stoll(this->exp) - stoll(e.get_exp()));
 }
 
-inline long long int Expression::mul(Expression e){
+inline long long int Expression::operator*(Expression e){
     return (stoll(this->exp) * stoll(e.get_exp()));
 }
 
-inline long long int Expression::div(Expression e){
+inline long long int Expression::operator/(Expression e){
     return (stoll(this->exp)/stoll(e.get_exp()));
 }
 
@@ -64,10 +64,10 @@ bool Expression::boolear(){
     }
 }
 
-inline bool Expression::e(Expression e){
-    return(e.boolear() & this->boolear());
+inline bool Expression::operator&&(Expression e){
+    return (e.boolear() && this->boolear());
 }
 
-inline bool Expression::ou(Expression e){
-    return(e.boolear() || this->boolear());
+inline bool Expression::operator||(Expression e){
+    return (e.boolear() || this->boolear());
 }

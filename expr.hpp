@@ -14,14 +14,14 @@ class Expression{
         inline bool is_bool();
         inline bool is_num();
         inline bool compativel(Expression e);
-        inline long long int add(Expression e);
-        inline long long int sub(Expression e);
-        inline long long int mul(Expression e);
-        inline long long int div(Expression e);
-        inline bool igual(Expression e);
-        inline bool maiorque(Expression e);
-        inline bool e(Expression e);
-        inline bool ou(Expression e);
+        inline long long int operator+(Expression e);
+        inline long long int operator-(Expression e);
+        inline long long int operator*(Expression e);
+        inline long long int operator/(Expression e);
+        inline bool operator==(Expression e);
+        inline bool operator>(Expression e);
+        inline bool operator&&(Expression e);
+        inline bool operator||(Expression e);
         bool boolear();
 };
 #endif
