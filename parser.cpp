@@ -146,12 +146,16 @@ Expression Parser::parse_primary(){
 }
 
 Expression Parser::parse_lit(){
+    char check = token[0];
     variant<long long int, bool> n = read(token);
     next_token();
     if(bool *b = get_if<bool>(&n)){
         return Log(*b);
     } else{
         long long int *l = get_if<long long int>(&n);
+        if(check == '-'){
+            *l *= -1;
+        }
         return Num(*l);
     }
 };
