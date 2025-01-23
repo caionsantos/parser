@@ -42,10 +42,10 @@ variant<long long int, bool> Parser::read(string s){
 }
 
 Expression Parser::parse_or(){
-    Expression e1 = parse_primary();
+    Expression e1 = parse_and();
     if(token == "||"){
         next_token();
-        Expression e2 = parse_primary();
+        Expression e2 = parse_and();
         if(e1.compativel(e2) and e1.get_tag()){
             return Log(e1.ou(e2));
         } else{
@@ -56,10 +56,88 @@ Expression Parser::parse_or(){
     }
 };
 
+Expression Parser::parse_and(){
+    Expression e1 = parse_eq();
+    if(token == "&&"){
+        next_token();
+        Expression e2 = parse_eq();
+        if(e1.compativel(e2) and e1.get_tag()){
+            return Log(e1.e(e2));
+        } else{
+            throw invalid_argument("error");
+        }
+    } else{
+        return e1;
+    }
+}
+
+Expression Parser::parse_eq(){
+    Expression e1 = parse_rel();
+    if(token == "=="){
+        next_token();
+        Expression e2 = parse_rel();
+        if(e1.compativel(e2) and e1.get_tag()){
+            return Log(e1.igual(e2));
+        } else{
+            throw invalid_argument("error");
+        }
+    } else if(token == "!="){
+        next_token();
+        Expression e2 = parse_rel();
+        if(e1.compativel(e2) and e1.get_tag()){
+            return Log(!(e1.igual(e2)));
+        } else{
+            throw invalid_argument("error");
+        }
+    } else{
+        return e1;
+    }
+}
+
+Expression Parser::parse_rel(){
+    Expression e1 = parse_primary();
+    if(token == ">"){
+        next_token();
+        Expression e2 = parse_primary();
+        if(e1.compativel(e2) and !(e1.get_tag())){
+            return Log(e1.maiorque(e2));
+        } else{
+            throw invalid_argument("error");
+        }
+    } else if(token == ">="){
+        next_token();
+        Expression e2 = parse_primary();
+        if(e1.compativel(e2) and !(e1.get_tag())){
+            return Log((e1.igual(e2)) or (e1.maiorque(e2)));
+        } else{
+            throw invalid_argument("error");
+        }
+    } else if(token == "<"){
+        next_token();
+        Expression e2 = parse_primary();
+        if(e1.compativel(e2) and !(e1.get_tag())){
+            return Log(!(e1.maiorque(e2)));
+        } else{
+            throw invalid_argument("error");
+        }
+    } else if(token == "<="){
+        next_token();
+        Expression e2 = parse_primary();
+        if(e1.compativel(e2) and !(e1.get_tag())){
+            return Log((e1.igual(e2)) or !(e1.maiorque(e2)));
+        } else{
+            throw invalid_argument("error");
+        }
+    } else{
+        return e1;
+    }
+}
+
 Expression Parser::parse_primary(){
     if(token == "("){
         next_token();
         Expression e1 = parse_or();
+        next_token();
         return e1;
     } else{
         Expression e1 = parse_lit();
