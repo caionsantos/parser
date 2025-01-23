@@ -28,6 +28,9 @@ class Expression{
         inline long long int operator-(Expression e){
             return (stoll(this->exp) - stoll(e.get_exp()));
         };
+        inline long long int operator-(){
+            return (0 - stoll(exp));
+        };
         inline long long int operator*(Expression e){
             return (stoll(this->exp) * stoll(e.get_exp()));
         };

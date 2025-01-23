@@ -71,7 +71,7 @@ Expression Parser::parse_eq(){
         next_token();
         Expression e2 = parse_rel();
         if(e1.compativel(e2)){
-            return e1 == e2;
+            return Expression(e1 == e2);
         } else{
             throw invalid_argument("error");
         }
@@ -89,10 +89,10 @@ Expression Parser::parse_eq(){
 }
 
 Expression Parser::parse_rel(){
-    Expression e1 = parse_primary();
+    Expression e1 = parse_add();
     if(token == ">"){
         next_token();
-        Expression e2 = parse_primary();
+        Expression e2 = parse_add();
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(e1 > e2);
         } else{
@@ -100,7 +100,7 @@ Expression Parser::parse_rel(){
         }
     } else if(token == ">="){
         next_token();
-        Expression e2 = parse_primary();
+        Expression e2 = parse_add();
         if(e1.compativel(e2) and e1.is_num()){
             return Expression((e1 == e2) or (e1 > e2));
         } else{
@@ -108,7 +108,7 @@ Expression Parser::parse_rel(){
         }
     } else if(token == "<"){
         next_token();
-        Expression e2 = parse_primary();
+        Expression e2 = parse_add();
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(!(e1 > e2));
         } else{
@@ -116,13 +116,74 @@ Expression Parser::parse_rel(){
         }
     } else if(token == "<="){
         next_token();
-        Expression e2 = parse_primary();
+        Expression e2 = parse_add();
         if(e1.compativel(e2) and e1.is_num()){
             return Expression((e1 == e2) or !(e1 > e2));
         } else{
             throw invalid_argument("error");
         }
     } else{
+        return e1;
+    }
+}
+
+Expression Parser::parse_add(){
+    Expression e1 = parse_mul();
+    if(token == "+"){
+        next_token();
+        Expression e2 = parse_mul();
+        if(e1.compativel(e2) and e1.is_num()){
+            return Expression(e1 + e2);
+        } else{
+            throw invalid_argument("error");
+        }
+    } else if(token == "-"){
+        next_token();
+        Expression e2 = parse_mul();
+        if(e1.compativel(e2) and e1.is_num()){
+            return Expression(e1 - e2);
+        } else{
+            throw invalid_argument("error");
+        }
+    } else{
+        return e1;
+    }
+}
+
+Expression Parser::parse_mul(){
+    Expression e1 = parse_unary();
+    if(token == "*"){
+        next_token();
+        Expression e2 = parse_unary();
+        if(e1.compativel(e2) and e1.is_num()){
+            return Expression(e1 * e2);
+        } else{
+            throw invalid_argument("error");
+        }
+    } else if(token == "/"){
+        next_token();
+        Expression e2 = parse_unary();
+        if(e1.compativel(e2) and e1.is_num()){
+            return Expression(e1/e2);
+        } else{
+            throw invalid_argument("error");
+        }
+    } else{
+        return e1;
+    }
+}
+
+Expression Parser::parse_unary(){
+    if(token == "-"){
+        next_token();
+        Expression e1 = parse_primary();
+        if(e1.is_num()){
+            return Expression(-e1);
+        } else{
+            throw invalid_argument("error");
+        }
+    } else{
+        Expression e1 = parse_primary();
         return e1;
     }
 }
