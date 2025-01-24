@@ -16,8 +16,6 @@ void Parser::init_token(){
 void Parser::next_token(){
     if((cin.peek() != '\n') and (cin.peek() != '\0')){ 
         cin >> token;
-    } else{
-        cin.ignore();
     }
 }
 
@@ -27,11 +25,7 @@ variant<long long int, bool> Parser::read(string s){
     } else if(s == "false"){
         return false;
     } else{
-        if(s[0] == '-'){
-            return -(stoll(s));
-        } else{
-            return stoll(s);
-        }
+        return stoll(s);
     }
 }
 
@@ -201,16 +195,12 @@ Expression Parser::parse_primary(){
 }
 
 Expression Parser::parse_lit(){
-    char check = token[0];
     variant<long long int, bool> n = read(token);
     next_token();
     if(bool *b = get_if<bool>(&n)){
         return Expression(*b);
     } else{
         long long int *l = get_if<long long int>(&n);
-        if(check == '-'){
-            *l *= -1;
-        }
         return Expression(*l);
     }
 };
