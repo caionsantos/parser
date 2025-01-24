@@ -10,7 +10,6 @@ class Parser{
         void init_token();
         Parser();
     private:
-        string original;
         string token;
         void next_token();
         variant<long long int, bool> read(string s);
@@ -20,7 +19,7 @@ class Parser{
         Expression parse_rel();
         Expression parse_add();
         Expression parse_mul();
-        Expression parse_unary(); //lembrar
+        Expression parse_unary();
         Expression parse_primary();
         Expression parse_lit();
 };
