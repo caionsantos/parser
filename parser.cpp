@@ -9,6 +9,10 @@ Expression Parser::parse(){
     return parse_or();
 }
 
+Parser::Parser(){
+    init_token();
+}
+
 void Parser::init_token(){
     cin >> token;
 }

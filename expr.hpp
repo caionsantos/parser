@@ -4,9 +4,10 @@
 using namespace std;
 
 class Expression{
+    private:
+        string exp;
     protected:
         bool tag;
-        string exp;
     public:
         Expression(bool b);
         Expression(long long int l);
@@ -29,7 +30,7 @@ class Expression{
             return (stoll(this->exp) - stoll(e.get_exp()));
         };
         inline long long int operator-(){
-            return (0 - stoll(exp));
+            return (0 - stoll(this->exp));
         };
         inline long long int operator*(Expression e){
             return (stoll(this->exp) * stoll(e.get_exp()));

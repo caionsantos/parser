@@ -8,7 +8,7 @@ class Parser{
     public:
         Expression parse();
         void init_token();
-        Parser() = default;
+        Parser();
     private:
         string original;
         string token;

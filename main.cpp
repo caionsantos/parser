@@ -13,7 +13,6 @@ int main() {
     cin >> t;
     for(int i = 0; i < t; i++){
         Parser p = Parser();
-        p.init_token();
         try{
             cout << p.parse().get_exp() << endl;
         } catch (invalid_argument){
