@@ -2,6 +2,7 @@
 #include "parser.hpp"
 #include <stdexcept>
 #include <iostream>
+#include <limits>
 using namespace std;
 
 Expression Parser::parse(){
@@ -10,6 +11,10 @@ Expression Parser::parse(){
 
 Parser::Parser(){
     init_token();
+}
+
+Parser::~Parser(){
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 void Parser::init_token(){

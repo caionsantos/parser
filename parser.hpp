@@ -10,6 +10,7 @@ class Parser{
         Expression parse();
         void init_token();
         Parser();
+        ~Parser();
     private:
         string token;
         void next_token();
