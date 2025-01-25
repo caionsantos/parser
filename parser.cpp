@@ -1,6 +1,7 @@
-#include <bits/stdc++.h>
 #include "expr.hpp"
 #include "parser.hpp"
+#include <stdexcept>
+#include <iostream>
 using namespace std;
 
 Expression Parser::parse(){
