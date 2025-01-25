@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #include "expr.hpp"
 #include "parser.hpp"
-#include <stdexcept>
 using namespace std;
 
 Expression Parser::parse(){
@@ -40,7 +39,7 @@ Expression Parser::parse_or(){
         if(e1.compativel(e2) and e1.is_bool()){
             return Expression(e1 || e2);
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else{
         return e1;
@@ -55,7 +54,7 @@ Expression Parser::parse_and(){
         if(e1.compativel(e2) and e1.is_bool()){
             return Expression(e1 && e2);
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else{
         return e1;
@@ -70,7 +69,7 @@ Expression Parser::parse_eq(){
         if(e1.compativel(e2)){
             return Expression(e1 == e2);
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else if(token == "!="){
         next_token();
@@ -78,7 +77,7 @@ Expression Parser::parse_eq(){
         if(e1.compativel(e2)){
             return Expression(!(e1 == e2));
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else{
         return e1;
@@ -93,7 +92,7 @@ Expression Parser::parse_rel(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(e1 > e2);
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else if(token == ">="){
         next_token();
@@ -101,7 +100,7 @@ Expression Parser::parse_rel(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression((e1 == e2) or (e1 > e2));
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else if(token == "<"){
         next_token();
@@ -109,7 +108,7 @@ Expression Parser::parse_rel(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(!(e1 > e2));
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else if(token == "<="){
         next_token();
@@ -117,7 +116,7 @@ Expression Parser::parse_rel(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression((e1 == e2) or !(e1 > e2));
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else{
         return e1;
@@ -132,7 +131,7 @@ Expression Parser::parse_add(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(e1 + e2);
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else if(token == "-"){
         next_token();
@@ -140,7 +139,7 @@ Expression Parser::parse_add(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(e1 - e2);
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else{
         return e1;
@@ -155,15 +154,19 @@ Expression Parser::parse_mul(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(e1 * e2);
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else if(token == "/"){
         next_token();
         Expression e2 = parse_unary();
         if(e1.compativel(e2) and e1.is_num()){
-            return Expression(e1/e2);
+            if(e2.get_exp() != "0"){
+                return Expression(e1/e2);
+            } else{
+                throw invalid_argument("divisão por zero");
+            }
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else{
         return e1;
@@ -177,7 +180,7 @@ Expression Parser::parse_unary(){
         if(e1.is_num()){
             return Expression(-e1);
         } else{
-            throw invalid_argument("error");
+            throw invalid_argument("conflito de tipos");
         }
     } else{
         Expression e1 = parse_primary();

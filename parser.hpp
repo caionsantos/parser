@@ -1,7 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
-#include <bits/stdc++.h>
 #include "expr.hpp"
+#include <string>
+#include <variant>
 using namespace std;
 
 class Parser{
