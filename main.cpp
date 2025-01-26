@@ -15,6 +15,8 @@ int main() {
             cout << p->parse().get_exp() << endl;
         } catch(invalid_argument){
             cout << "error" << endl;
+        } catch(...){
+            cout << "erro não previsto" << endl;
         }
         delete p;
     }

@@ -33,7 +33,11 @@ variant<long long int, bool> Parser::read(string s){
     } else if(s == "false"){
         return false;
     } else{
-        return stoll(s);
+        try{
+            return stoll(s);
+        } catch(out_of_range){
+            throw invalid_argument("número não cabe em 64 bits");
+        }
     }
 }
 
@@ -50,7 +54,7 @@ Expression Parser::parse_or(){
     } else{
         return e1;
     }
-};
+}
 
 Expression Parser::parse_and(){
     Expression e1 = parse_eq();
