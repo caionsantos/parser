@@ -27,6 +27,40 @@ void Parser::next_token(){
     }
 }
 
+bool Parser::is_mult_safe(Expression e1, Expression e2){
+    if((e1.get_exp() == "0") or (e2.get_exp() == "0")){
+        return true;
+    } else{
+        Expression a = e1 * e2;
+        if((Expression(a/e1) == e2) and (Expression(a/e2) == e1)){
+            return true;
+        } else{
+            return false;
+        }
+    }
+}
+
+bool Parser::is_add_safe(Expression e1, Expression e2){
+    Expression check = e1 + e2;
+    if((e1.get_exp()[0] == '-') and (e2.get_exp()[0] == '-')){
+        //llongmin + llongmin = 0
+        if(check.get_exp()[0] != '-'){
+            return false;
+        } else{
+            return true;
+        }
+    } else if((e1.get_exp()[0] != '-') and (e2.get_exp()[0] != '-')){
+        //llongmax + llongmax = -2
+        if(check.get_exp()[0] == '-'){
+            return false;
+        } else{
+            return true;
+        }
+    } else{
+        return true;
+    }
+}
+
 variant<long long int, bool> Parser::read(string s){
     if(s == "true"){
         return true;
@@ -139,7 +173,11 @@ Expression Parser::parse_add(){
         next_token();
         Expression e2 = parse_mul();
         if(e1.compativel(e2) and e1.is_num()){
-            return Expression(e1 + e2);
+            if(is_add_safe(e1, e2)){
+                return Expression(e1 + e2);
+            } else{
+                throw overflow_error("overflow");
+            }
         } else{
             throw invalid_argument("conflito de tipos");
         }
@@ -147,7 +185,11 @@ Expression Parser::parse_add(){
         next_token();
         Expression e2 = parse_mul();
         if(e1.compativel(e2) and e1.is_num()){
-            return Expression(e1 - e2);
+            if(is_add_safe(e1, -e2)){
+                return Expression(e1 - e2);
+            } else{
+                throw overflow_error("overflow");
+            }
         } else{
             throw invalid_argument("conflito de tipos");
         }
@@ -162,7 +204,11 @@ Expression Parser::parse_mul(){
         next_token();
         Expression e2 = parse_unary();
         if(e1.compativel(e2) and e1.is_num()){
-            return Expression(e1 * e2);
+            if(is_mult_safe(e1, e2)){
+                return Expression(e1 * e2);
+            } else{
+                throw overflow_error("overflow");
+            }
         } else{
             throw invalid_argument("conflito de tipos");
         }

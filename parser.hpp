@@ -14,6 +14,8 @@ class Parser{
     private:
         string token;
         void next_token();
+        bool is_mult_safe(Expression e1, Expression e2);
+        bool is_add_safe(Expression e1, Expression e2);
         variant<long long int, bool> read(string s);
         Expression parse_or();
         Expression parse_and();
