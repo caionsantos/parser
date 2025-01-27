@@ -15,6 +15,8 @@ Parser::Parser(){
 
 Parser::~Parser(){
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    //chamado quando o parser é deletado, esse destrutor ignora o resto
+    //da expressão no caso de erro
 }
 
 void Parser::init_token(){
@@ -61,6 +63,9 @@ bool Parser::is_add_safe(Expression e1, Expression e2){
     }
 }
 
+//o uso de variant, baseado em templates, permite a definição de
+//um método único "read" ao invés de múltiplos para bools e ints
+//melhorando a legibilidade e eficiência
 variant<long long int, bool> Parser::read(string s){
     if(s == "true"){
         return true;
@@ -76,12 +81,17 @@ variant<long long int, bool> Parser::read(string s){
 }
 
 Expression Parser::parse_or(){
+    //variáveis dentro das diversas funções do parser não são
+    //alocadas dinamicamente pois elas já são apagadas pela stack
+    //conforme as funções vão retornando
     Expression e1 = parse_and();
     if(token == "||"){
         next_token();
         Expression e2 = parse_and();
         if(e1.compativel(e2) and e1.is_bool()){
             return (e1 || e2);
+            //compilador converterá o resultado (bool) em Expression
+            //implicitamente
         } else{
             throw InvalidOperation("conflito de tipos");
         }

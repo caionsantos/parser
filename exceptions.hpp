@@ -10,6 +10,11 @@ class Exception{
         virtual string what()=0;
 };
 
+//a classe virtual Exception serve como base para as exceções
+//que representam problemas específicos, permitindo tratamento
+//generalizado na main, além de criar uma base que todas as classes
+//de erro devem seguir.
+
 class InvalidOperation : virtual public Exception{
     public:
         InvalidOperation(string erro);

@@ -11,6 +11,8 @@ class Expression{
     public:
         Expression(bool b);
         Expression(long long int l);
+        //diversos métodos curtos abaixo definidos como inline
+        //para maior eficiência, incluindo gets e operadores
         inline string get_exp(){
             return this->exp;
         };

@@ -13,11 +13,14 @@ int main() {
         try{
             cout << p->parse().get_exp() << endl;
         } catch(const Exception& e){
+            //tratamento das exceções previstas no código, derivadas de Exception
             cout << "error" << endl;
         } catch(...){
             cout << "erro não previsto" << endl;
         }
         delete p;
+        //alocar o parser dinamicamente garante que não haverá vazamento
+        //de memória para entradas grandes demais
     }
 
     return 0;

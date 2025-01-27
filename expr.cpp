@@ -10,6 +10,10 @@ Expression::Expression(bool b){
     }
 }
 
+//a sobrecarga do construtor permite saber quando a expressão é 
+//de um número ou de um booleano e colocar a tag apropriada
+//para checar a compatibilidade nas operações
+
 Expression::Expression(long long int l){
     this->tag = false;
     this->exp = to_string(l);
