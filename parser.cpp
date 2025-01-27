@@ -1,6 +1,6 @@
 #include "expr.hpp"
+#include "exceptions.hpp"
 #include "parser.hpp"
-#include <stdexcept>
 #include <iostream>
 #include <limits>
 using namespace std;
@@ -70,7 +70,7 @@ variant<long long int, bool> Parser::read(string s){
         try{
             return stoll(s);
         } catch(out_of_range){
-            throw invalid_argument("número não cabe em 64 bits");
+            throw Overflow("número não cabe em 64 bits");
         }
     }
 }
@@ -83,7 +83,7 @@ Expression Parser::parse_or(){
         if(e1.compativel(e2) and e1.is_bool()){
             return Expression(e1 || e2);
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else{
         return e1;
@@ -98,7 +98,7 @@ Expression Parser::parse_and(){
         if(e1.compativel(e2) and e1.is_bool()){
             return Expression(e1 && e2);
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else{
         return e1;
@@ -113,7 +113,7 @@ Expression Parser::parse_eq(){
         if(e1.compativel(e2)){
             return Expression(e1 == e2);
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else if(token == "!="){
         next_token();
@@ -121,7 +121,7 @@ Expression Parser::parse_eq(){
         if(e1.compativel(e2)){
             return Expression(!(e1 == e2));
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else{
         return e1;
@@ -136,7 +136,7 @@ Expression Parser::parse_rel(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(e1 > e2);
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else if(token == ">="){
         next_token();
@@ -144,7 +144,7 @@ Expression Parser::parse_rel(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression((e1 == e2) or (e1 > e2));
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else if(token == "<"){
         next_token();
@@ -152,7 +152,7 @@ Expression Parser::parse_rel(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression(!(e1 > e2));
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else if(token == "<="){
         next_token();
@@ -160,7 +160,7 @@ Expression Parser::parse_rel(){
         if(e1.compativel(e2) and e1.is_num()){
             return Expression((e1 == e2) or !(e1 > e2));
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else{
         return e1;
@@ -176,10 +176,10 @@ Expression Parser::parse_add(){
             if(is_add_safe(e1, e2)){
                 return Expression(e1 + e2);
             } else{
-                throw overflow_error("overflow");
+                throw Overflow("overflow");
             }
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else if(token == "-"){
         next_token();
@@ -188,10 +188,10 @@ Expression Parser::parse_add(){
             if(is_add_safe(e1, -e2)){
                 return Expression(e1 - e2);
             } else{
-                throw overflow_error("overflow");
+                throw Overflow("overflow");
             }
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else{
         return e1;
@@ -207,10 +207,10 @@ Expression Parser::parse_mul(){
             if(is_mult_safe(e1, e2)){
                 return Expression(e1 * e2);
             } else{
-                throw overflow_error("overflow");
+                throw Overflow("overflow");
             }
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else if(token == "/"){
         next_token();
@@ -219,10 +219,10 @@ Expression Parser::parse_mul(){
             if(e2.get_exp() != "0"){
                 return Expression(e1/e2);
             } else{
-                throw invalid_argument("divisão por zero");
+                throw DivZero("divisão por zero");
             }
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else{
         return e1;
@@ -236,7 +236,7 @@ Expression Parser::parse_unary(){
         if(e1.is_num()){
             return Expression(-e1);
         } else{
-            throw invalid_argument("conflito de tipos");
+            throw InvalidOperation("conflito de tipos");
         }
     } else{
         Expression e1 = parse_primary();

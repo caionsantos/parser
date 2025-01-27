@@ -1,21 +1,18 @@
 #include "parser.cpp"
 #include "expr.cpp"
-#include <stdexcept>
+#include "exceptions.cpp"
 #include <string>
 using namespace std;
 
 int main() {
     
     int t;
-    string s;
     cin >> t;
     for(int i = 0; i < t; i++){
         Parser* p = new Parser();
         try{
             cout << p->parse().get_exp() << endl;
-        } catch(invalid_argument){
-            cout << "error" << endl;
-        } catch(overflow_error){
+        } catch(const Exception& e){
             cout << "error" << endl;
         } catch(...){
             cout << "erro não previsto" << endl;
