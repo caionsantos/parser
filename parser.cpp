@@ -81,7 +81,7 @@ Expression Parser::parse_or(){
         next_token();
         Expression e2 = parse_and();
         if(e1.compativel(e2) and e1.is_bool()){
-            return Expression(e1 || e2);
+            return (e1 || e2);
         } else{
             throw InvalidOperation("conflito de tipos");
         }
@@ -96,7 +96,7 @@ Expression Parser::parse_and(){
         next_token();
         Expression e2 = parse_eq();
         if(e1.compativel(e2) and e1.is_bool()){
-            return Expression(e1 && e2);
+            return (e1 && e2);
         } else{
             throw InvalidOperation("conflito de tipos");
         }
@@ -111,7 +111,7 @@ Expression Parser::parse_eq(){
         next_token();
         Expression e2 = parse_rel();
         if(e1.compativel(e2)){
-            return Expression(e1 == e2);
+            return (e1 == e2);
         } else{
             throw InvalidOperation("conflito de tipos");
         }
@@ -119,7 +119,7 @@ Expression Parser::parse_eq(){
         next_token();
         Expression e2 = parse_rel();
         if(e1.compativel(e2)){
-            return Expression(!(e1 == e2));
+            return (!(e1 == e2));
         } else{
             throw InvalidOperation("conflito de tipos");
         }
@@ -134,7 +134,7 @@ Expression Parser::parse_rel(){
         next_token();
         Expression e2 = parse_add();
         if(e1.compativel(e2) and e1.is_num()){
-            return Expression(e1 > e2);
+            return (e1 > e2);
         } else{
             throw InvalidOperation("conflito de tipos");
         }
@@ -142,7 +142,7 @@ Expression Parser::parse_rel(){
         next_token();
         Expression e2 = parse_add();
         if(e1.compativel(e2) and e1.is_num()){
-            return Expression((e1 == e2) or (e1 > e2));
+            return ((e1 == e2) or (e1 > e2));
         } else{
             throw InvalidOperation("conflito de tipos");
         }
@@ -150,7 +150,7 @@ Expression Parser::parse_rel(){
         next_token();
         Expression e2 = parse_add();
         if(e1.compativel(e2) and e1.is_num()){
-            return Expression(!(e1 > e2));
+            return (!(e1 > e2) and !(e1 == e2));
         } else{
             throw InvalidOperation("conflito de tipos");
         }
@@ -158,7 +158,7 @@ Expression Parser::parse_rel(){
         next_token();
         Expression e2 = parse_add();
         if(e1.compativel(e2) and e1.is_num()){
-            return Expression((e1 == e2) or !(e1 > e2));
+            return (!(e1 > e2));
         } else{
             throw InvalidOperation("conflito de tipos");
         }
@@ -174,7 +174,7 @@ Expression Parser::parse_add(){
         Expression e2 = parse_mul();
         if(e1.compativel(e2) and e1.is_num()){
             if(is_add_safe(e1, e2)){
-                return Expression(e1 + e2);
+                return (e1 + e2);
             } else{
                 throw Overflow("overflow");
             }
@@ -186,7 +186,7 @@ Expression Parser::parse_add(){
         Expression e2 = parse_mul();
         if(e1.compativel(e2) and e1.is_num()){
             if(is_add_safe(e1, -e2)){
-                return Expression(e1 - e2);
+                return (e1 - e2);
             } else{
                 throw Overflow("overflow");
             }
@@ -205,7 +205,7 @@ Expression Parser::parse_mul(){
         Expression e2 = parse_unary();
         if(e1.compativel(e2) and e1.is_num()){
             if(is_mult_safe(e1, e2)){
-                return Expression(e1 * e2);
+                return (e1 * e2);
             } else{
                 throw Overflow("overflow");
             }
@@ -217,7 +217,7 @@ Expression Parser::parse_mul(){
         Expression e2 = parse_unary();
         if(e1.compativel(e2) and e1.is_num()){
             if(e2.get_exp() != "0"){
-                return Expression(e1/e2);
+                return (e1/e2);
             } else{
                 throw DivZero("divisão por zero");
             }
@@ -234,7 +234,7 @@ Expression Parser::parse_unary(){
         next_token();
         Expression e1 = parse_primary();
         if(e1.is_num()){
-            return Expression(-e1);
+            return (-e1);
         } else{
             throw InvalidOperation("conflito de tipos");
         }
