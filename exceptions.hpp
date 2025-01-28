@@ -8,6 +8,9 @@ class Exception{
         string erro;
     public:
         virtual string what()=0;
+        inline string get_erro(){
+            return this->erro;
+        }
 };
 
 //a classe virtual Exception serve como base para as exceções

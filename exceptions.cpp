@@ -6,7 +6,7 @@ InvalidOperation::InvalidOperation(string erro){
 }
 
 string InvalidOperation::what(){
-    return this->erro;
+    return "Operação com argumentos inválidos";
 }
 
 DivZero::DivZero(string erro){
@@ -14,7 +14,7 @@ DivZero::DivZero(string erro){
 }
 
 string DivZero::what(){
-    return this->erro;
+    return "Divisão por zero";
 }
 
 Overflow::Overflow(string erro){
@@ -22,5 +22,5 @@ Overflow::Overflow(string erro){
 }
 
 string Overflow::what(){
-    return this->erro;
+    return "Resultado não cabe em 64 bits";
 }
