@@ -24,7 +24,7 @@ void Parser::init_token(){
 }
 
 void Parser::next_token(){
-    if((cin.peek() != '\n') and (cin.peek() != '\0')){ 
+    if(cin.peek() != '\n'){ 
         cin >> token;
     }
 }
@@ -75,7 +75,7 @@ variant<long long int, bool> Parser::read(string s){
         try{
             return stoll(s);
         } catch(out_of_range){
-            throw Overflow("número não cabe em 64 bits");
+            throw Overflow("literal ultrapassa 64 bits");
         }
     }
 }
